@@ -1,11 +1,12 @@
-name: Run commitlint
+name: commitlint
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened]
 
 jobs:
   commitlint:
+    name: Run commitlint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

@@ -2,7 +2,7 @@ name: golangci-lint
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened]
 
 jobs:
   golangci:
