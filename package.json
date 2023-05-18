@@ -1,0 +1,24 @@
+{
+  "name": "compare-go-orm",
+  "version": "1.0.0",
+  "description": "Try multiple Go ORM and compare features",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sonkibon/compare-go-orm.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sonkibon/compare-go-orm/issues"
+  },
+  "homepage": "https://github.com/sonkibon/compare-go-orm#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.3",
+    "@commitlint/config-conventional": "^17.6.3"
+  }
+}
