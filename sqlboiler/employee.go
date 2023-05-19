@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/sonkibon/compare-go-orm/model"
@@ -76,6 +77,34 @@ func (e *employeeRepositorImpl) Insert(ctx context.Context, employee model.Emplo
 
 	if err := entity.Insert(ctx, e.exec, boil.Infer()); err != nil {
 		return fmt.Errorf("entity.Insert: %w", err)
+	}
+
+	return nil
+}
+
+func (e *employeeRepositorImpl) Update(ctx context.Context, employee model.Employee) error {
+	emp, err := entity.FindEmployee(ctx, e.exec, employee.EmpNo)
+	if err != nil {
+		return fmt.Errorf("entity.FindEmployee: %w", err)
+	}
+
+	emp.BirthDate = employee.BirthDate
+	emp.FirstName = employee.FirstName
+	emp.LastName = employee.LastName
+	emp.Gender = employee.Gender.Value()
+	emp.HireDate = employee.HireDate
+
+	rowsAff, err := emp.Update(ctx, e.exec, boil.Blacklist(entity.EmployeeColumns.CreatedAt))
+	if err != nil {
+		return fmt.Errorf("emp.Update: %w", err)
+	}
+
+	const (
+		expectedAffectedRows int64 = 1
+	)
+
+	if expectedAffectedRows != rowsAff {
+		return errors.New("The affected rows are not as expected")
 	}
 
 	return nil
