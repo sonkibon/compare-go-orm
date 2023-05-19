@@ -109,3 +109,30 @@ func (e *employeeRepositorImpl) Update(ctx context.Context, employee model.Emplo
 
 	return nil
 }
+
+func (e *employeeRepositorImpl) Delete(ctx context.Context, empNo int, hardDelete bool) error {
+	employee, err := entity.FindEmployee(ctx, e.exec, empNo)
+	if err != nil {
+		return fmt.Errorf("entity.FindEmployee: %w", err)
+	}
+
+	var rowsAff int64
+	if hardDelete {
+		rowsAff, err = employee.Delete(ctx, e.exec, true)
+	} else {
+		rowsAff, err = employee.Delete(ctx, e.exec, false)
+	}
+	if err != nil {
+		return fmt.Errorf("employee.Delete: %w", err)
+	}
+
+	const (
+		expectedAffectedRows int64 = 1
+	)
+
+	if expectedAffectedRows != rowsAff {
+		return errors.New("The affected rows are not as expected")
+	}
+
+	return nil
+}
