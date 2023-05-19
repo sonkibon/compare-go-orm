@@ -63,3 +63,20 @@ func (e *employeeRepositorImpl) Select(ctx context.Context) ([]*model.Employee, 
 
 	return m, nil
 }
+
+func (e *employeeRepositorImpl) Insert(ctx context.Context, employee model.Employee) error {
+	entity := entity.Employee{
+		EmpNo:     employee.EmpNo,
+		BirthDate: employee.BirthDate,
+		FirstName: employee.FirstName,
+		LastName:  employee.LastName,
+		Gender:    employee.Gender.Value(),
+		HireDate:  employee.HireDate,
+	}
+
+	if err := entity.Insert(ctx, e.exec, boil.Infer()); err != nil {
+		return fmt.Errorf("entity.Insert: %w", err)
+	}
+
+	return nil
+}
