@@ -8,6 +8,11 @@ This will help you when you want to compare ORM in go.
 
 ## Getting Started
 
+1. start mysql container
+```
+docker-compose up -d mysql
+```
+
 ### Prerequisites
 
 ### Installation
