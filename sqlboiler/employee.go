@@ -136,3 +136,20 @@ func (e *employeeRepositorImpl) Delete(ctx context.Context, empNo int, hardDelet
 
 	return nil
 }
+
+func (e *employeeRepositorImpl) Upsert(ctx context.Context, employee model.Employee) error {
+	emp := entity.Employee{
+		EmpNo:     employee.EmpNo,
+		BirthDate: employee.BirthDate,
+		FirstName: employee.FirstName,
+		LastName:  employee.LastName,
+		Gender:    employee.Gender.Value(),
+		HireDate:  employee.HireDate,
+	}
+
+	if err := emp.Upsert(ctx, e.exec, boil.Blacklist(entity.EmployeeColumns.CreatedAt), boil.Infer()); err != nil {
+		return fmt.Errorf("entity.Upsert: %w", err)
+	}
+
+	return nil
+}
