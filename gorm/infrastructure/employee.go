@@ -46,3 +46,33 @@ func (e *employeeRepositorImpl) Find(ctx context.Context, empNo int) (*model.Emp
 		HireDate:  employee.HireDate,
 	}, nil
 }
+
+func (e *employeeRepositorImpl) Select(ctx context.Context) ([]*model.Employee, error) {
+	employees := make([]*Employee, 0, 5)
+	condition := Employee{
+		Gender: model.GenderMale.Value(),
+	}
+
+	result := e.db.Where(condition).Order("created_at DESC").Limit(5).Find(&employees)
+	if result.Error != nil {
+		return nil, fmt.Errorf("e.db.Where.Order.Limit.Find: %w", result.Error)
+	}
+
+	m := make([]*model.Employee, 0, len(employees))
+
+	for _, v := range employees {
+		m = append(
+			m,
+			&model.Employee{
+				EmpNo:     v.EmpNo,
+				BirthDate: v.BirthDate,
+				FirstName: v.FirstName,
+				LastName:  v.LastName,
+				Gender:    model.Gender(v.Gender),
+				HireDate:  v.HireDate,
+			},
+		)
+	}
+
+	return m, nil
+}
