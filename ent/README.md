@@ -1,4 +1,4 @@
-# gorm
+# ent
 
 ## Overview
 Sample code using [ent](https://github.com/ent/ent) to access database.
