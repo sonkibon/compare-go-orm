@@ -98,3 +98,11 @@ func (e *employeeRepositorImpl) Update(ctx context.Context, employee model.Emplo
 
 	return nil
 }
+
+func (e *employeeRepositorImpl) Delete(ctx context.Context, empNo int, hardDelete bool) error {
+	if err := e.client.Employee.DeleteOneID(empNo).Exec(ctx); err != nil {
+		return fmt.Errorf("e.client.Employee.DeleteOneID.Exec: %w", err)
+	}
+
+	return nil
+}
