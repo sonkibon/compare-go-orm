@@ -9,7 +9,7 @@ Sample code using sqlboiler to access database.
 
 1. Run the code
 ```
-go run sqlboiler/*.go
+go run sqlboiler/main.go
 ```
 
 ### If you want to generate code
