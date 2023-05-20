@@ -103,4 +103,12 @@ func main() {
 			v.HireDate,
 		)
 	}
+
+	if err := e.Delete(ctx, 10001, true); err != nil {
+		log.Fatalf("e.Delete: %v", err)
+	}
+
+	if err := e.Delete(ctx, 10002, true); err != nil {
+		log.Fatalf("e.Delete: %v", err)
+	}
 }
