@@ -3,9 +3,12 @@ package main
 import (
 	"context"
 	"log"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/sonkibon/compare-go-orm/ent"
+	"github.com/sonkibon/compare-go-orm/ent/infrastructure"
+	"github.com/sonkibon/compare-go-orm/model"
 )
 
 func main() {
@@ -19,5 +22,19 @@ func main() {
 
 	if err := client.Schema.Create(ctx); err != nil {
 		log.Fatalf("client.Schema.Create: %v", err)
+	}
+
+	e := infrastructure.NewEmployeeRepositorImpl(client)
+
+	hogeEmployee := model.Employee{
+		BirthDate: time.Now(),
+		FirstName: "Hoge",
+		LastName:  "Fuga",
+		Gender:    model.GenderFemale,
+		HireDate:  time.Now(),
+	}
+
+	if err := e.Insert(ctx, hogeEmployee); err != nil {
+		log.Fatalf("e.Insert: %v", err)
 	}
 }
