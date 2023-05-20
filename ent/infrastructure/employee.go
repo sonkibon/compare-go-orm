@@ -106,3 +106,21 @@ func (e *employeeRepositorImpl) Delete(ctx context.Context, empNo int, hardDelet
 
 	return nil
 }
+
+func (e *employeeRepositorImpl) Upsert(ctx context.Context, employee model.Employee) error {
+	err := e.client.Employee.Create().
+		SetBirthDate(employee.BirthDate).
+		SetFirstName(employee.FirstName).
+		SetLastName(employee.LastName).
+		SetGender(emp.Gender(employee.Gender.Value())).
+		SetHireDate(employee.HireDate).
+		SetLastName(employee.LastName).
+		OnConflict().
+		UpdateNewValues().
+		Exec(ctx)
+	if err != nil {
+		return fmt.Errorf("e.client.Employee.Create.OnConflict.UpdateNewValues.Exec: %w", err)
+	}
+
+	return nil
+}
