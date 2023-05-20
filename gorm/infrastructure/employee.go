@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"time"
 
+	"github.com/sonkibon/compare-go-orm/repository"
 	"gorm.io/gorm"
 )
 
@@ -16,4 +17,12 @@ type Employee struct {
 	CreatedAt time.Time      `gorm:"type:datetime;not null"`
 	UpdatedAt time.Time      `gorm:"type:datetime;not null"`
 	DeletedAt gorm.DeletedAt `gorm:"type:datetime"`
+}
+
+type employeeRepositorImpl struct {
+	db *gorm.DB
+}
+
+func NewEmployeeRepositorImpl(db *gorm.DB) repository.Employee {
+	return &employeeRepositorImpl{db: db}
 }
