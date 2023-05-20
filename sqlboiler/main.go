@@ -8,6 +8,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/sonkibon/compare-go-orm/model"
+	"github.com/sonkibon/compare-go-orm/sqlboiler/infrastructure"
 )
 
 func main() {
@@ -18,7 +19,7 @@ func main() {
 
 	ctx := context.Background()
 
-	e := NewEmployeeRepositorImpl(db)
+	e := infrastructure.NewEmployeeRepositorImpl(db)
 
 	employee, err := e.Find(ctx, 10002)
 	if err != nil {
