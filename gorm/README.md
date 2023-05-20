@@ -9,7 +9,7 @@ Sample code using [gorm](https://github.com/go-gorm/gorm) to access database.
 ```
 docker-compose up -d mysql
 ```
-1. Run the code
+2. Run the code
 ```
 go run gorm/main.go
 ```
