@@ -1,13 +1,17 @@
 # sqlboiler
 
 ## Overview
-Sample code using sqlboiler to access database.
-
-### Built With
+Sample code using [sqlboiler](https://github.com/volatiletech/sqlboiler) to access database.
 
 ## Getting Started
 
-1. Run the code
+1. Uncomment
+Check this [comment](https://github.com/sonkibon/compare-go-orm/blob/main/docker-compose.yml#L5)
+2. Start mysql container
+```
+docker-compose up -d mysql
+```
+3. Run the code
 ```
 go run sqlboiler/main.go
 ```
@@ -27,13 +31,3 @@ cd sqlboiler
 ```
 sqlboiler mysql --output entity --pkgname entity --add-soft-deletes
 ```
-
-### Prerequisites
-
-### Installation
-
-## Usage
-
-## Contributing
-
-## Contact
