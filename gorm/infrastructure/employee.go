@@ -132,3 +132,30 @@ func (e *employeeRepositorImpl) Update(ctx context.Context, employee model.Emplo
 
 	return nil
 }
+
+func (e *employeeRepositorImpl) Delete(ctx context.Context, empNo int, hardDelete bool) error {
+	entity := &Employee{EmpNo: empNo}
+
+	var result *gorm.DB
+	if hardDelete {
+		result = e.db.Unscoped().Delete(entity)
+		if result.Error != nil {
+			return fmt.Errorf("e.db.Unscoped.Delete: %w", result.Error)
+		}
+	} else {
+		result = e.db.Delete(entity)
+		if result.Error != nil {
+			return fmt.Errorf("e.db.Delete: %w", result.Error)
+		}
+	}
+
+	const (
+		expectedAffectedRows int64 = 1
+	)
+
+	if result.RowsAffected != expectedAffectedRows {
+		return apperr.ErrAffectedRows
+	}
+
+	return nil
+}
