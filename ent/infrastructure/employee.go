@@ -82,3 +82,19 @@ func (e *employeeRepositorImpl) Insert(ctx context.Context, employee model.Emplo
 
 	return nil
 }
+
+func (e *employeeRepositorImpl) Update(ctx context.Context, employee model.Employee) error {
+	_, err := e.client.Employee.Update().
+		SetBirthDate(employee.BirthDate).
+		SetFirstName(employee.FirstName).
+		SetLastName(employee.LastName).
+		SetGender(emp.Gender(employee.Gender.Value())).
+		SetHireDate(employee.HireDate).
+		SetLastName(employee.LastName).
+		Save(ctx)
+	if err != nil {
+		return fmt.Errorf("e.client.Employee.Create.Update: %w", err)
+	}
+
+	return nil
+}
