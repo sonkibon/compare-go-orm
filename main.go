@@ -84,4 +84,22 @@ func main() {
 	if err := e.Upsert(ctx, fooEmployee); err != nil {
 		log.Fatalf("e.Upsert: %v", err)
 	}
+
+	employees, err := e.Select(ctx)
+	if err != nil {
+		log.Fatalf("e.Select: %v", err)
+	}
+
+	log.Default().Println("Select result")
+	for _, v := range employees {
+		log.Default().Printf(
+			"emp_no: %d, birth_date: %v, first_name: %v, last_name: %v, gender: %v, hire_date: %v",
+			v.EmpNo,
+			v.BirthDate,
+			v.FirstName,
+			v.LastName,
+			v.Gender.Value(),
+			v.HireDate,
+		)
+	}
 }
