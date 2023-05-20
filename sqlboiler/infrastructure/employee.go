@@ -2,9 +2,9 @@ package infrastructure
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
+	"github.com/sonkibon/compare-go-orm/apperr"
 	"github.com/sonkibon/compare-go-orm/model"
 	"github.com/sonkibon/compare-go-orm/repository"
 	"github.com/sonkibon/compare-go-orm/sqlboiler/entity"
@@ -104,7 +104,7 @@ func (e *employeeRepositorImpl) Update(ctx context.Context, employee model.Emplo
 	)
 
 	if expectedAffectedRows != rowsAff {
-		return errors.New("The affected rows are not as expected")
+		return apperr.ErrAffectedRows
 	}
 
 	return nil
@@ -131,7 +131,7 @@ func (e *employeeRepositorImpl) Delete(ctx context.Context, empNo int, hardDelet
 	)
 
 	if expectedAffectedRows != rowsAff {
-		return errors.New("The affected rows are not as expected")
+		return apperr.ErrAffectedRows
 	}
 
 	return nil
