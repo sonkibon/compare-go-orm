@@ -19,7 +19,9 @@ func main() {
 		log.Fatalf("gorm.Open: %v", err)
 	}
 
-	db.AutoMigrate(&infrastructure.Employee{})
+	if err := db.AutoMigrate(&infrastructure.Employee{}); err != nil {
+		log.Fatalf("db.AutoMigrate: %v", err)
+	}
 
 	ctx := context.Background()
 
