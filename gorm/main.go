@@ -72,4 +72,17 @@ func main() {
 		employee.Gender.Value(),
 		employee.HireDate,
 	)
+
+	fooEmployee := model.Employee{
+		EmpNo:     10002,
+		BirthDate: time.Now(),
+		FirstName: "Foo",
+		LastName:  "Bar",
+		Gender:    model.GenderMale,
+		HireDate:  time.Now(),
+	}
+
+	if err := e.Upsert(ctx, fooEmployee); err != nil {
+		log.Fatalf("e.Upsert: %v", err)
+	}
 }
