@@ -103,3 +103,32 @@ func (e *employeeRepositorImpl) Insert(ctx context.Context, employee model.Emplo
 
 	return nil
 }
+
+func (e *employeeRepositorImpl) Update(ctx context.Context, employee model.Employee) error {
+	entity := &Employee{EmpNo: employee.EmpNo}
+	result := e.db.First(entity)
+	if result.Error != nil {
+		return fmt.Errorf("e.db.First: %w", result.Error)
+	}
+
+	entity.BirthDate = employee.BirthDate
+	entity.FirstName = employee.FirstName
+	entity.LastName = employee.LastName
+	entity.Gender = employee.Gender.Value()
+	entity.HireDate = employee.HireDate
+
+	result = e.db.Save(entity)
+	if result.Error != nil {
+		return fmt.Errorf("e.db.Save: %w", result.Error)
+	}
+
+	const (
+		expectedAffectedRows int64 = 1
+	)
+
+	if result.RowsAffected != expectedAffectedRows {
+		return apperr.ErrAffectedRows
+	}
+
+	return nil
+}
