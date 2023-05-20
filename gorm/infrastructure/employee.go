@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/sonkibon/compare-go-orm/apperr"
 	"github.com/sonkibon/compare-go-orm/model"
 	"github.com/sonkibon/compare-go-orm/repository"
 	"gorm.io/gorm"
@@ -75,4 +76,30 @@ func (e *employeeRepositorImpl) Select(ctx context.Context) ([]*model.Employee, 
 	}
 
 	return m, nil
+}
+
+func (e *employeeRepositorImpl) Insert(ctx context.Context, employee model.Employee) error {
+	entity := &Employee{
+		EmpNo:     employee.EmpNo,
+		BirthDate: employee.BirthDate,
+		FirstName: employee.FirstName,
+		LastName:  employee.LastName,
+		Gender:    employee.Gender.Value(),
+		HireDate:  employee.HireDate,
+	}
+
+	result := e.db.Create(entity)
+	if result.Error != nil {
+		return fmt.Errorf("e.db.Create: %w", result.Error)
+	}
+
+	const (
+		expectedAffectedRows int64 = 1
+	)
+
+	if result.RowsAffected != expectedAffectedRows {
+		return apperr.ErrAffectedRows
+	}
+
+	return nil
 }
