@@ -52,4 +52,24 @@ func main() {
 		employee.Gender.Value(),
 		employee.HireDate,
 	)
+
+	hogeEmployee.Gender = model.GenderMale
+	if err := e.Update(ctx, hogeEmployee); err != nil {
+		log.Fatalf("e.Update: %v", err)
+	}
+
+	employee, err = e.Find(ctx, 10001)
+	if err != nil {
+		log.Fatalf("e.Find: %v", err)
+	}
+
+	log.Default().Printf(
+		"Update result\nemp_no: %d, birth_date: %v, first_name: %v, last_name: %v, gender: %v, hire_date: %v",
+		employee.EmpNo,
+		employee.BirthDate,
+		employee.FirstName,
+		employee.LastName,
+		employee.Gender.Value(),
+		employee.HireDate,
+	)
 }
