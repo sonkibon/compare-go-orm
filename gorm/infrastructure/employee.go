@@ -159,3 +159,29 @@ func (e *employeeRepositorImpl) Delete(ctx context.Context, empNo int, hardDelet
 
 	return nil
 }
+
+func (e *employeeRepositorImpl) Upsert(ctx context.Context, employee model.Employee) error {
+	entity := &Employee{
+		EmpNo:     employee.EmpNo,
+		BirthDate: employee.BirthDate,
+		FirstName: employee.FirstName,
+		LastName:  employee.LastName,
+		Gender:    employee.Gender.Value(),
+		HireDate:  employee.HireDate,
+	}
+
+	result := e.db.Save(entity)
+	if result.Error != nil {
+		return fmt.Errorf("e.db.Save: %w", result.Error)
+	}
+
+	const (
+		expectedAffectedRows int64 = 1
+	)
+
+	if result.RowsAffected != expectedAffectedRows {
+		return apperr.ErrAffectedRows
+	}
+
+	return nil
+}
