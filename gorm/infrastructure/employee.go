@@ -1,8 +1,11 @@
 package infrastructure
 
 import (
+	"context"
+	"fmt"
 	"time"
 
+	"github.com/sonkibon/compare-go-orm/model"
 	"github.com/sonkibon/compare-go-orm/repository"
 	"gorm.io/gorm"
 )
@@ -25,4 +28,21 @@ type employeeRepositorImpl struct {
 
 func NewEmployeeRepositorImpl(db *gorm.DB) repository.Employee {
 	return &employeeRepositorImpl{db: db}
+}
+
+func (e *employeeRepositorImpl) Find(ctx context.Context, empNo int) (*model.Employee, error) {
+	employee := &Employee{EmpNo: empNo}
+	result := e.db.First(employee)
+	if result.Error != nil {
+		return nil, fmt.Errorf("e.db.First: %w", result.Error)
+	}
+
+	return &model.Employee{
+		EmpNo:     employee.EmpNo,
+		BirthDate: employee.BirthDate,
+		FirstName: employee.FirstName,
+		LastName:  employee.LastName,
+		Gender:    model.Gender(employee.Gender),
+		HireDate:  employee.HireDate,
+	}, nil
 }
